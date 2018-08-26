@@ -1,5 +1,40 @@
 $(document).ready(function () {
 
+var questions = [
+
+    question1 = {
+        question: "What is my favorite color1?",
+        option1: "red",
+        option2: "green",
+        option3: "blue",
+        option4: "pink"
+    },
+    question2 = {
+        question: "What is my favorite color2?",
+        option1: "red",
+        option2: "green",
+        option3: "blue",
+        option4: "pink"
+    },
+    question3 = {
+        question: "What is my favorite color3?",
+        option1: "red",
+        option2: "green",
+        option3: "blue",
+        option4: "pink"
+    },
+];
+
+console.log(typeof(questions[0]));
+
+function showQuestions(){
+questions.forEach(function(e){
+    $("#questions").append(e.question,$("<br>"));
+});
+};
+
+
+
     //hide all the questions
 
     //Variable timer will hold the setInterval when we start the slideshow
@@ -51,6 +86,7 @@ $(document).ready(function () {
         //show all the question
         countDown.startTimer();
         $("#startButton").hide();
+        showQuestions();
     });
 
 
