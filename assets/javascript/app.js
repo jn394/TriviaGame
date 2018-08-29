@@ -10,7 +10,7 @@ $(document).ready(function () {
                 c: "blue",
                 d: "pink"
             },
-            correct: "black"
+            correct: "pink"
         },
         {
             question: "What is my favorite color2?",
@@ -20,7 +20,7 @@ $(document).ready(function () {
                 c: "blue2",
                 d: "pink2"
             },
-            correct: "purple"
+            correct: "green2"
         },
         {
             question: "What is my favorite color3?",
@@ -30,85 +30,23 @@ $(document).ready(function () {
                 c: "blue3",
                 d: "pink3"
             },
-            correct: "teal"
+            correct: "red3"
         },
     ];
-
-    console.log(typeof (myQuestions[2].answers.a));
-
-
-    var correctAnswers = [];
-
-    for (var i = 0; i < myQuestions.length; i++) {
-        console.log(myQuestions[i].question);
-        $("#questions").append($("<br>"), myQuestions[i].question);
-        correctAnswers.push(myQuestions[i].correct);
-
-        var innerLoop = myQuestions[i].answers;
-
-        for (var letter in innerLoop) {
-            console.log(innerLoop[letter]);
-            $("#questions").append($("<br>"), $("<input type='radio' class='form-check-input ans' name='exampleRadios' value=" + innerLoop[letter] + " checked>"), innerLoop[letter]);
-            console.log($(".ans").attr("value"));
-        };
-    };
-
-    console.log(correctAnswers);
-    var black = "black"
-
-    console.log(correctAnswers.includes(black));
-
-    $('#btnStatus').click(function () {
-        var isChecked = $(".ans").prop("checked");
-        alert(isChecked);
-        console.log($(".ans").prop("checked"))
-    });
-
-    if ($(".ans").prop("checked") && correctAnswers.includes($(".ans").attr("value"))) {
-        score++
-    };
-
-
-
-    // function showQuestions() {
-
-    // var answersList = [];
-
-    // for (var i = 0; i < questions.length; i++) {
-    //     answersList.push(questions[i].answers.a);
-    //     answersList.push(questions[i].answers.b);
-    //     answersList.push(questions[i].answers.c);
-    //     answersList.push(questions[i].answers.d);
-    // };
-
-    // console.log(answersList);
-
-
-    // myQuestions.forEach(function (e) {
-    //     $("#questions").append(e.question, $("<br>"), e.answers.a, $("<br>"), e.answers.b, $("<br>"), e.answers.c, $("<br>"), e.answers.d, $("<br>"));
-    //     $("#answers").html("<input class='form-check-input' type='radio'>" + e.answers.a)
-
-    //     e.answers.forEach(function (k) {
-    //         $("#answers").html("<input class='form-check-input' type='radio'>" + answers.k);
-    //     });
-
-    // });
-
-
-    // };
 
     //Variable timer will hold the setInterval when we start the slideshow
     var intervalId;
 
-    //Scores
-    var numberCorrect = 3;
+    //Variables
+    var numberCorrect = 0;
     var numberQuestions = 10;
-    var score = 0;
+    var score;
+    var correctAnswers = [];
 
     //Two mintue count down.
     var countDown = {
 
-        time: 120,
+        time: 10,
 
         //A function that at every second it applys the timeCount function.
         startTimer: function () {
@@ -120,16 +58,16 @@ $(document).ready(function () {
             countDown.time--;
             $("#display").text(countDown.timeConverter(countDown.time));
 
-            //When countDown ends the game stops ands the questions and shows results.
+            //When the time runs out the questions are hidden and results are shown.
             if (countDown.time <= 0) {
-                $("#questions").hide();
                 clearInterval(intervalId);
                 $("#display").hide();
+                $("#questions").hide();
                 countDown.myResults();
             };
         },
 
-        //  Takes the current time in seconds and convert it to minutes and seconds (mm:ss).
+        //Takes the current time in seconds and convert it to minutes and seconds (mm:ss).
         timeConverter: function (t) {
 
             var minutes = Math.floor(t / 60);
@@ -147,8 +85,34 @@ $(document).ready(function () {
             return minutes + ":" + seconds;
         },
 
+        //A function that shows the questions and answers
+        showQuestions: function () {
+            for (var i = 0; i < myQuestions.length; i++) {
+                //Adds the questions into the "#questions" div
+                console.log(myQuestions[i].question);
+                $("#questions").append($("<br>"), myQuestions[i].question);
+                //Pushes the correct answers into a array
+                correctAnswers.push(myQuestions[i].correct);
+
+                var innerLoop = myQuestions[i].answers;
+                
+                //This for loop starts a loop in the "answers" object 
+                for (var letter in innerLoop) {
+                    //Adds the answers into the "#questions" div
+                    console.log(innerLoop[letter]);
+                    $("#questions").append("<br>" + "<input type='radio' class='form-check-input ans' name=" + i + " value=" + innerLoop[letter] + " >" + "<label class='form-check-label' for='exampleRadios1'>" + innerLoop[letter] + "</label>");
+                };
+            };
+        },
+
         //if startment showing percentage of right answers
         myResults: function () {
+            //For loop that goes through all radio buttons that were checked and sees if the values of the radio button are in the correctAnswers array
+            for (var j = 0; j < myQuestions.length; j++) {
+                if (correctAnswers.includes($("input[name=" + j + "]:checked").val())) {
+                    numberCorrect++;
+                }
+            };
             score = (numberCorrect / numberQuestions) * 100;
             $("#score").append(score + "%");
         },
@@ -157,15 +121,9 @@ $(document).ready(function () {
     //When startButton is clicked it reveals all the questions and starts the countDown
     $("#startButton").on("click", function () {
         //show all the question
-        countDown.startTimer();
         $("#startButton").hide();
-        // showQuestions();
+        countDown.startTimer(); 
+        countDown.showQuestions();
     });
-
-
-
-
-
-    //if statment when all questions are filled end game
 
 });
