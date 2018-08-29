@@ -10,6 +10,7 @@ $(document).ready(function () {
                 c: "blue",
                 d: "pink"
             },
+            correct: "black"
         },
         {
             question: "What is my favorite color2?",
@@ -19,6 +20,7 @@ $(document).ready(function () {
                 c: "blue2",
                 d: "pink2"
             },
+            correct: "purple"
         },
         {
             question: "What is my favorite color3?",
@@ -28,138 +30,43 @@ $(document).ready(function () {
                 c: "blue3",
                 d: "pink3"
             },
+            correct: "teal"
         },
     ];
 
     console.log(typeof (myQuestions[2].answers.a));
 
 
-    // for (var key in myQuestions) {
-    //     //Gives me question1, question2, question3,...etc
-    //     console.log(key);
-    //     var questionsArray = myQuestions[key];
-
-    //     for (var i in questionsArray) {
-    //         //Gives me contents inside 'question' and 'answers'.
-    //         console.log(questionsArray[i]);
-    //         $("#questions").append(questionsArray[i]);
-
-    //         var item = questionsArray.answers;
-    //         for (var j in item) {
-    //             //Gives me the individual contents inside answers
-    //             console.log(item[j]);
-    //             $("#questions").append($("<br>"), item[j]);
-    //         };
-    //     };
-    // };
-
-    // var quizContainer = $("#quiz");
-    // var resultsContainer = $("#results");
-    // var submitButton = $("#submit");
-
-    // generateQuiz(myQuestions, quizContainer, resultsContainer, submitButton);
-
-    // function generateQuiz(questions, quizContainer, resultsContainer, submitButton) {
-
-    //     function showQuestions(questions, quizContainer) {
-    //         // we'll need a place to store the output and the answer choices
-    //         var output = [];
-    //         var answers;
-    //         console.log("working1")
-
-    //         // for each question...
-    //         for (var i = 0; i < questions.length; i++) {
-
-    //             // first reset the list of answers
-    //             answers = [];
-    //             console.log("working2")
-    //             // for each available answer...
-    //             for (letter in questions[i].answers) {
-
-    //                 // ...add an html radio button
-    //                 answers.push(
-    //                     '<label>'
-    //                     + '<input type="radio" name="question' + i + '" value="' + letter + '">'
-    //                     + letter + ': '
-    //                     + questions[i].answers[letter]
-    //                     + '</label>'
-    //                 );
-    //             }
-
-    //             // add this question and its answers to the output
-    //             output.push(
-    //                 '<div class="question">' + questions[i].question + '</div>'
-    //                 + '<div class="answers">' + answers.join('') + '</div>'
-    //             );
-    //         }
-
-    //         // finally combine our output list into one string of html and put it on the page
-    //         quizContainer.innerHTML = output.join('');
-    //     }
-
-
-    //     function showResults(questions, quizContainer, resultsContainer) {
-
-    //         // gather answer containers from our quiz
-    //         var answerContainers = quizContainer.querySelectorAll('.answers');
-
-    //         // keep track of user's answers
-    //         var userAnswer = '';
-    //         var numCorrect = 0;
-
-    //         // for each question...
-    //         for (var i = 0; i < questions.length; i++) {
-
-    //             // find selected answer
-    //             userAnswer = (answerContainers[i].querySelector('input[name=question' + i + ']:checked') || {}).value;
-
-    //             // if answer is correct
-    //             if (userAnswer === questions[i].correctAnswer) {
-    //                 // add to the number of correct answers
-    //                 numCorrect++;
-
-    //                 // color the answers green
-    //                 answerContainers[i].style.color = 'lightgreen';
-    //             }
-    //             // if answer is wrong or blank
-    //             else {
-    //                 // color the answers red
-    //                 answerContainers[i].style.color = 'red';
-    //             }
-    //         }
-
-    //         // show number of correct answers out of total
-    //         resultsContainer.innerHTML = numCorrect + ' out of ' + questions.length;
-    //     }
-
-    //     // show questions right away
-    //     showQuestions(questions, quizContainer);
-
-    //     // on submit, show results
-    //     submitButton.onclick = function () {
-    //         showResults(questions, quizContainer, resultsContainer);
-    //     }
-
-    // }
-
+    var correctAnswers = [];
 
     for (var i = 0; i < myQuestions.length; i++) {
         console.log(myQuestions[i].question);
-        $("#questions").append(myQuestions[i].question);
+        $("#questions").append($("<br>"), myQuestions[i].question);
+        correctAnswers.push(myQuestions[i].correct);
 
         var innerLoop = myQuestions[i].answers;
 
-        for (var letters in innerLoop) {
-            console.log(innerLoop[letters]);
-            $("#answers").append(innerLoop[letters]);
-        }
-    }
+        for (var letter in innerLoop) {
+            console.log(innerLoop[letter]);
+            $("#questions").append($("<br>"), $("<input type='radio' class='form-check-input ans' name='exampleRadios' value=" + innerLoop[letter] + " checked>"), innerLoop[letter]);
+            console.log($(".ans").attr("value"));
+        };
+    };
 
+    console.log(correctAnswers);
+    var black = "black"
 
+    console.log(correctAnswers.includes(black));
 
+    $('#btnStatus').click(function () {
+        var isChecked = $(".ans").prop("checked");
+        alert(isChecked);
+        console.log($(".ans").prop("checked"))
+    });
 
-
-
+    if ($(".ans").prop("checked") && correctAnswers.includes($(".ans").attr("value"))) {
+        score++
+    };
 
 
 
@@ -196,7 +103,7 @@ $(document).ready(function () {
     //Scores
     var numberCorrect = 3;
     var numberQuestions = 10;
-    var score;
+    var score = 0;
 
     //Two mintue count down.
     var countDown = {
