@@ -3,36 +3,110 @@ $(document).ready(function () {
     var myQuestions = [
 
         {
-            question: "What is my favorite color1?",
+            question: "In the Harry Potter series, what is the name of Harry’s pet owl?",
             answers: {
-                a: "red",
-                b: "green",
-                c: "blue",
-                d: "pink"
+                a: "Owlbert Einstein",
+                b: "Hedwig",
+                c: "Ghost",
+                d: "Hootie"
             },
-            correct: "pink"
+            correct: "Hedwig"
         },
         {
-            question: "What is my favorite color2?",
+            question: "Emma Watson is known for playing which character in Harry Potter?",
             answers: {
-                a: "red2",
-                b: "green2",
-                c: "blue2",
-                d: "pink2"
+                a: "Hermione Granger",
+                b: "Luna Lovegood",
+                c: "Ginny Weasley",
+                d: "Cho Chang"
             },
-            correct: "green2"
+            correct: "Hermione Granger"
         },
         {
-            question: "What is my favorite color3?",
+            question: "What is Harry Potter's House in Hogwarts?",
             answers: {
-                a: "red3",
-                b: "green3",
-                c: "blue3",
-                d: "pink3"
+                a: "Ravenclaw",
+                b: "Hufflepuff",
+                c: "Slytherin",
+                d: "Gryffindor"
             },
-            correct: "red3"
+            correct: "Gryffindor"
         },
+        {
+            question: "In what year was the first Harry Potter movie released?",
+            answers: {
+                a: "1999",
+                b: "2000",
+                c: "2001",
+                d: "2002"
+            },
+            correct: "2001"
+        },
+        {
+            question: "Among the wizarding community, the term Muggle refers to what kind of person?",
+            answers: {
+                a: "A magical person who is really bad at magic",
+                b: "A magical person with only one magical parent",
+                c: "A non-magical person from a non-magical family",
+                d: "A non-magical person from a magical family"
+            },
+            correct: "A non-magical person from a non-magical family"
+        },
+        {
+            question: "What colour is the Hogwarts Express?",
+            answers: {
+                a: "Emerald",
+                b: "Scarlet",
+                c: "Indigo",
+                d: "Green"
+            },
+            correct: "Scarlet"
+        },
+        {
+            question: "How are letters sent in the wizarding world?",
+            answers: {
+                a: "Via broomstick",
+                b: "Via lan line",
+                c: "Via postmen",
+                d: "Via owls"
+            },
+            correct: "Via owls"
+        },
+        {
+            question: "Who played Lord Voldemort in the movies?",
+            answers: {
+                a: "Jeremy Irons",
+                b: "Tom Hiddleston",
+                c: "Gary Oldman",
+                d: "Ralph Fiennes"
+            },
+            correct: "Ralph Fiennes"
+        },
+        {
+            question: "What is the golden ball in Quidditch called?",
+            answers: {
+                a: "Snitch",
+                b: "Quaffle",
+                c: "Bludger",
+                d: "Wiffles"
+            },
+            correct: "Snitch"
+        },
+        {
+            question: "From what King's Cross platform does the Hogwarts Express leave?",
+            answers: {
+                a: "Eight & One-Quarter",
+                b: "Nine & Three-Quarters",
+                c: "Five & A Half",
+                d: "Eleventeen"
+            },
+            correct: "Nine & Three-Quarters"
+        }
     ];
+
+    //Hiding display and submit buttons
+    $("#display").hide();
+    $("#submitButton").hide();
 
     //Variable timer will hold the setInterval when we start the slideshow
     var intervalId;
@@ -46,7 +120,7 @@ $(document).ready(function () {
     //Two mintue count down.
     var countDown = {
 
-        time: 10,
+        time: 120,
 
         //A function that at every second it applys the timeCount function.
         startTimer: function () {
@@ -95,7 +169,7 @@ $(document).ready(function () {
                 correctAnswers.push(myQuestions[i].correct);
 
                 var innerLoop = myQuestions[i].answers;
-                
+
                 //This for loop starts a loop in the "answers" object 
                 for (var letter in innerLoop) {
                     //Adds the answers into the "#questions" div
@@ -103,6 +177,17 @@ $(document).ready(function () {
                     $("#questions").append("<br>" + "<input type='radio' class='form-check-input ans' name=" + i + " value=" + innerLoop[letter] + " >" + "<label class='form-check-label' for='exampleRadios1'>" + innerLoop[letter] + "</label>");
                 };
             };
+        },
+
+        //A functions that when button is clicked the game ends and score is releaved.
+        mySubmit: function () {
+            $("#submitButton").on("click", function () {
+                clearInterval(intervalId);
+                $("#display").hide();
+                $("#questions").hide();
+                $("#submitButton").hide();
+                countDown.myResults();
+            });
         },
 
         //if startment showing percentage of right answers
@@ -114,7 +199,7 @@ $(document).ready(function () {
                 }
             };
             score = (numberCorrect / numberQuestions) * 100;
-            $("#score").append(score + "%");
+            $("#score").append("You got " + score + "%");
         },
     };
 
@@ -122,8 +207,11 @@ $(document).ready(function () {
     $("#startButton").on("click", function () {
         //show all the question
         $("#startButton").hide();
-        countDown.startTimer(); 
+        $("#display").show();
+        $("#submitButton").show();
+        countDown.startTimer();
         countDown.showQuestions();
+        countDown.mySubmit();
     });
 
 });
