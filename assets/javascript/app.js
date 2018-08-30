@@ -107,6 +107,7 @@ $(document).ready(function () {
     //Hiding display and submit buttons
     $("#display").hide();
     $("#submitButton").hide();
+    $("#results").hide();
 
     //Variable timer will hold the setInterval when we start the slideshow
     var intervalId;
@@ -164,9 +165,9 @@ $(document).ready(function () {
             for (var i = 0; i < myQuestions.length; i++) {
                 //Adds the questions into the "#questions" div
                 console.log(myQuestions[i].question);
-                $("#questions").append($("<br>"), myQuestions[i].question);
+                $("#questions").append($("<br>"), $("<br>"), myQuestions[i].question);
                 //Pushes the correct answers into a array
-                correctAnswers.push(myQuestions[i].correct);
+                correctAnswers.push(myQuestions[i].correct.replace(/\s/g,''));
 
                 var innerLoop = myQuestions[i].answers;
 
@@ -174,7 +175,7 @@ $(document).ready(function () {
                 for (var letter in innerLoop) {
                     //Adds the answers into the "#questions" div
                     console.log(innerLoop[letter]);
-                    $("#questions").append("<br>" + "<input type='radio' class='form-check-input ans' name=" + i + " value=" + innerLoop[letter] + " >" + "<label class='form-check-label' for='exampleRadios1'>" + innerLoop[letter] + "</label>");
+                    $("#questions").append("<br>" + "<input type='radio' class='form-check-input ans' name=" + i + " value=" + innerLoop[letter].replace(/\s/g,'') + " >" + "<label class='form-check-label' for='exampleRadios1'>" + innerLoop[letter] + "</label>");
                 };
             };
         },
@@ -194,12 +195,34 @@ $(document).ready(function () {
         myResults: function () {
             //For loop that goes through all radio buttons that were checked and sees if the values of the radio button are in the correctAnswers array
             for (var j = 0; j < myQuestions.length; j++) {
+                console.log($("input[name=" + j + "]:checked").val());
                 if (correctAnswers.includes($("input[name=" + j + "]:checked").val())) {
                     numberCorrect++;
                 }
             };
+            $("#results").show();
             score = (numberCorrect / numberQuestions) * 100;
-            $("#score").append("You got " + score + "%");
+            if (score <= 30){
+                $("#gifs").attr("src", "https://media.giphy.com/media/XgIvYDNkLh49q/giphy.gif");
+                $("#results").append("<h3>" + "WOW You Really Are a Muggle" + "</h3>");
+            }
+            else if (score > 30 && score <= 50){
+                $("#gifs").attr("src", "http://mrwgifs.com/wp-content/uploads/2013/04/Daniel-Radcliffe-Crying-Gif-In-Harry-Potter.gif");
+                $("#results").append("<h3>" + "Awww It's Ok Atleast You Tried" + "</h3>");
+            }
+            else if (score > 50 && score <= 70){
+                $("#gifs").attr("src", "http://lovelace-media.imgix.net/uploads/62/5889f760-a701-0131-b6c9-4ab1d83132ba.gif?");
+                $("#results").append("<h3>" + "Good Job! You're Pretty Good" + "</h3>");
+            }
+            else if (score > 70 && score <= 90){
+                $("#gifs").attr("src", "https://media1.tenor.com/images/e8499a0f268be7bc76f80dd453ad2fe2/tenor.gif?itemid=4794040");
+                $("#results").append("<h3>" + "Amazing! You're Really Good" + "</h3>");
+            }
+            else if (score = 100){
+                $("#gifs").attr("src", "http://cdn1.alloy.com/wp-content/uploads/2015/06/harry-potter-wow.gif");
+                $("#results").append("<h3>" + "WOW!!! Somebody Read Their Books! A True Potter Head!" + "</h3>");
+            };
+            $("#score").append("<h3>" + "You Got " + score + "%" + " Correct!" + "</h3>");
         },
     };
 
@@ -212,6 +235,7 @@ $(document).ready(function () {
         countDown.startTimer();
         countDown.showQuestions();
         countDown.mySubmit();
+        console.log(correctAnswers);
     });
 
 });
