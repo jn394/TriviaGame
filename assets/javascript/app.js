@@ -200,6 +200,7 @@ $(document).ready(function () {
                     numberCorrect++;
                 }
             };
+            $("#submitButton").hide();
             $("#results").show();
             score = (numberCorrect / numberQuestions) * 100;
             if (score <= 30){
