@@ -204,7 +204,7 @@ $(document).ready(function () {
             score = (numberCorrect / numberQuestions) * 100;
             if (score <= 30){
                 $("#gifs").attr("src", "https://media.giphy.com/media/XgIvYDNkLh49q/giphy.gif");
-                $("#results").append("<h3>" + "WOW You Really Are a Muggle" + "</h3>");
+                $("#results").append("<h3>" + "Sorry But You Really Are a Muggle" + "</h3>");
             }
             else if (score > 30 && score <= 50){
                 $("#gifs").attr("src", "http://mrwgifs.com/wp-content/uploads/2013/04/Daniel-Radcliffe-Crying-Gif-In-Harry-Potter.gif");
